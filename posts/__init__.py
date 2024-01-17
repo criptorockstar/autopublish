@@ -1,0 +1,1 @@
+from posts.post import Post
