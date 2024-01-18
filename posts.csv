@@ -1,5 +1,3 @@
-contenido: post de prueba desde selenium
-imagen: ~/Imágenes/gameover01.jpg
-
-contenido: segunda publicación de prueba
-imagen: ~/Imágenes/gameover.gif
+contenido,imagen
+post de prueba desde selenium,~/Imágenes/gameover01.jpg
+segunda publicación de prueba,~/Imágenes/gameover.gif

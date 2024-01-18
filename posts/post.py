@@ -14,39 +14,44 @@ class Post:
 
     def load(self):
         self.driver.get("https://www.facebook.com/?sk=welcome")
-        plus = self.driver.find_element('xpath', '//*[@id="mount_0_0_uZ"]/div/div[1]/div/div[2]/div[5]/div[1]/div[3]/div[2]/span/div')
+        
+        # Esperar hasta que el botón '+' sea visible
+        plus = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//div[@aria-label="Crear"]'))
+        )
         plus.click()
+
+        boton_post = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[text()="Publicación"]'))
+        )
+        boton_post.click()
 
         # lee los posts dentro del archivo CSV
         self.fetch()
 
 
     def fetch(self):
-        posts = []
         archivo = './posts.csv'
+        df = pd.read_csv(archivo)
+        
+        # Se procede a publicar pasando los posts como parametro
+        self.publish(df)
 
-        # Abre el archivo CSV y lee línea por línea
-        with open(archivo, 'r') as file:
-            lines = file.readlines()
-            post = {}
-            for line in lines:
-                line = line.strip()
-                if line.startswith('contenido: '):
-                    post['contenido'] = line[len('contenido: '):]
-                elif line.startswith('imagen: '):
-                    post['imagen'] = line[len('imagen: '):]
-                    # Agrega el post a la lista y reinicializa 
-                    # el diccionario para el próximo post
-                    posts.append(post)
-                    post = {}
+    def publish(self, df):
+        # Input
+        content = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[starts-with(@aria-label, "¿Qué estás pensando,")]'))
+        )
+        content.send_keys("Contenido")
+        
+        # Menu para elegir que elementos adjuntar
+        menu = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[@aria-label="Agregar a tu publicación"]'))
+        )
+        menu.click()
 
-        # Muestra los posts
-        for i, post in enumerate(posts, 1):
-            print(f"Post {i}:")
-            print(f"Contenido: {post.get('contenido')}")
-            print(f"Imagen: {post.get('imagen')}")
-            print("\n")
-
-
-    def publish(self):
-        pass
+        # Item Foto/Video
+        picture = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[text()="Foto/video"]'))
+        )
+        picture.click()

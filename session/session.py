@@ -1,5 +1,7 @@
+import os
 import getpass
 import pickle
+from datetime import datetime
 from rich import print
 from rich.console import Console
 from selenium.webdriver import ActionChains
@@ -53,8 +55,14 @@ class Session:
         with open("./session/cookies/cookies.pkl", "rb") as file:
             cookies = pickle.load(file)
         
-        # Abrir una página web y establecer las cookies
-        self.driver.get("https://www.facebook.com/login")
-        for cookie in cookies:
-            self.driver.add_cookie(cookie)
-        self.driver.get("https://www.facebook.com/?sk=welcome")
+        # Verificar si caducaron las cookies
+        if any('expiry' in cookie and cookie['expiry'] < int(datetime.now().timestamp()) for cookie in cookies):
+            self.console.print("Caducaron lsa cookies de session", style="bold red")
+            os.remove("./session/cookies/cookies.pkl")
+            self.login()
+        else:
+            # Abrir una página web y establecer las cookies
+            self.driver.get("https://www.facebook.com/login")
+            for cookie in cookies:
+                self.driver.add_cookie(cookie)
+            self.driver.get("https://www.facebook.com/?sk=welcome")

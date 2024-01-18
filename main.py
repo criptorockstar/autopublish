@@ -10,6 +10,15 @@ class Bot:
         self.options = Options()
         self.options.add_experimental_option("detach", True)
         self.options.add_argument("--disable-notifications")
+        self.options.add_argument('--disable-infobars')
+        self.options.add_argument('--disable-popup-blocking')
+        self.options.add_argument('--ignore-certificate-errors')
+        self.options.add_argument('--disable-infobars')
+        self.options.add_argument('--disable-extensions')
+
+        # Muestra el tema oscuro de chrome
+        self.options.add_argument('--force-dark-mode')
+        
         self.driver = webdriver.Chrome(options=self.options)
         self.post = Post(self.driver)
         self.session = Session(self.driver)
