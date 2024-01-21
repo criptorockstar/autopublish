@@ -6,7 +6,8 @@ from selenium.webdriver.chrome.options import Options
 
 
 class Bot:
-    def __init__(self) -> None:
+    def __init__(self, timezone) -> None:
+        self.timezone = timezone
         self.options = Options()
         self.options.add_experimental_option("detach", True)
         self.options.add_argument("--disable-notifications")
@@ -20,18 +21,19 @@ class Bot:
         self.options.add_argument('--force-dark-mode')
         
         self.driver = webdriver.Chrome(options=self.options)
-        self.post = Post(self.driver)
+        self.post = Post(self.driver, self.timezone)
         self.session = Session(self.driver)
 
 
     def start(self):
         if os.path.isfile("./session/cookies/cookies.pkl"):
             self.session.load()
-            self.post.load()
+            self.post.start()
         else:
             self.session.login()
 
 
 if __name__=="__main__":
-    bot = Bot()
+    zona = "America/Montevideo" #Ajusta la zona horaria
+    bot = Bot(zona)
     bot.start()
