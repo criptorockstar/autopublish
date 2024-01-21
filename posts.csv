@@ -1,3 +1,3 @@
-contenido,imagen,tiempo,publicado
-post de prueba desde selenium,~/Imágenes/gameover01.jpg,30s,false
-segunda publicación de prueba,~/Imágenes/gameover.gif,30s,false
+contenido,imagen,tiempo
+post de prueba desde selenium,~/Imágenes/gameover01.jpg,30s
+segunda publicación de prueba,~/Imágenes/gameover.gif,30s

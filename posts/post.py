@@ -19,7 +19,7 @@ class Post:
 
 
     def start(self):
-        item = None
+        posts = None
 
         def calculate():
             df = self.fetch()
@@ -42,12 +42,17 @@ class Post:
             match = re.search(r'(\d+)([a-zA-Z])$', tiempo)
             if not match: # verificamos que el tiempo tenga el formato esperado
                 print("El tiempo no tiene un formato valido.")
+                self.driver.quit()
+
+            # verificamos que sea uno de los 3 valores mencionados
+            if indicador is not 's' and indicador is not 'm' and indicador is not 'h':
+                print("Los valores aceptados con: (s)egundo, (m)inutos, (h)oras.")
+                self.driver.quit()
 
             numero = int(match.group(1))
             indicador = match.group(2)
 
-            print(numero)
-            print(indicador)
+            
             
 
         calculate()
