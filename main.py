@@ -21,6 +21,7 @@ class Bot:
         self.options.add_argument('--force-dark-mode')
         
         self.driver = webdriver.Chrome(options=self.options)
+        self.driver.set_window_size(640, 480)
         self.post = Post(self.driver, self.timezone)
         self.session = Session(self.driver)
 
