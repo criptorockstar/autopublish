@@ -177,7 +177,7 @@ class Post:
         picture_button.click()
         
         ''' Al gatillar el evento de insertar imagen aparece
-        el input["file"] oculto en el D.O.M el cual podemos'''
+        el input["file"] oculto en el D.O.M'''
         file_input = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//input[@type="file"]'))
         )
