@@ -184,3 +184,13 @@ class Post:
         file_input.send_keys(image_path)
 
         # Submit -> Publicar
+        submit = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//div[@aria-label="Publicar"]'))
+        )
+        submit.click()
+        '''
+        funciona todo pero por alguna razon al hacer click en publicar no pasa nada
+        '''
+        # Haciendo clic mediante JavaScript
+        #self.driver.execute_script("arguments[0].click();", submit)
+        print("completado")
