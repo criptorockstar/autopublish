@@ -148,7 +148,7 @@ class Post:
 
 
     def publish(self, df):
-        # Ruta de una imagen de prueba
+        # Ruta de una imagen de prueba / al terminar pruebas se usa self.data
         image_path = "/home/criptorockstar/Imágenes/gameover01.jpg"
 
         # @Input -> contenido del post
