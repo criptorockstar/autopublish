@@ -28,10 +28,13 @@ class Bot:
     def start(self):
         if os.path.isfile("./session/cookies/cookies.pkl"):
             self.session.load()
-            #self.post.start()
+            #self.post.start() #habilitar al terminar las pruebas
+
+            # para pruebas / borrar al terminar las pruebas
             df = self.post.fetch()
             self.post.load()
             self.post.publish(df)
+            # para pruebas / borrar al terminar las pruebas
         else:
             self.session.login()
 
