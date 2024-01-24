@@ -149,15 +149,16 @@ class Post:
 
     def publish(self, df):
         # Ruta de una imagen de prueba / al terminar pruebas se usa self.data
-        image_path = "/home/criptorockstar/Imágenes/gameover01.jpg"
+        #image_path = "/home/criptorockstar/Imágenes/gameover01.jpg"
 
+        
+        '''
         # @Input -> contenido del post
         content = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, '//*[starts-with(@aria-label, "¿Qué estás pensando,")]'))
         )
         content.send_keys("Contenido")
 
-        ''' Obteniendo el input["file"]'''
         # Boton -> adjuntar elementos
         menu = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@aria-label="Agregar a tu publicación"]'))
@@ -169,15 +170,8 @@ class Post:
             EC.visibility_of_element_located((By.XPATH, '//*[text()="Foto/video"]'))
         )
         picture.click()
-
-        # Item -> agregar fotos/videos
-        picture_button = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, '//*[text()="Agregar fotos/videos"]'))
-        )
-        picture_button.click()
         
-        ''' Al gatillar el evento de insertar imagen aparece
-        el input["file"] oculto en el D.O.M'''
+        # subir la imagen
         file_input = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//input[@type="file"]'))
         )
@@ -185,12 +179,15 @@ class Post:
 
         # Submit -> Publicar
         submit = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//div[@aria-label="Publicar"]'))
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="submit"]'))
         )
-        submit.click()
+
+        # Cambiar el estilo para hacerlo visible
+        self.driver.execute_script("arguments[0].style.display = 'block';", submit)
+
+        # esperar hasta que el boton sea clickeable
+        time.sleep(3)
+
+        # Simular un clic en el elemento utilizando JavaScript
+        self.driver.execute_script("arguments[0].click();", submit)
         '''
-        funciona todo pero por alguna razon al hacer click en publicar no pasa nada
-        '''
-        # Haciendo clic mediante JavaScript
-        #self.driver.execute_script("arguments[0].click();", submit)
-        print("completado")
