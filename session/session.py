@@ -1,68 +1,86 @@
 import os
+import sys
 import getpass
 import pickle
 from datetime import datetime
-from rich import print
 from rich.console import Console
-from selenium.webdriver import ActionChains
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 class Session:
-    def __init__(self, driver) -> None:
+    def __init__(self, driver, lang, t) -> None:
         self.driver = driver
         self.console = Console()
 
+        # Translations
+        self.lang = lang
+        self.t = t
+
 
     def login(self):
-        self.driver.get("https://www.facebook.com/login")
+        self.driver.get(f"https://www.facebook.com/?locale=en&login")
 
         user = self.driver.find_element('xpath', '//*[@id="email"]')
         password = self.driver.find_element('xpath', '//*[@id="pass"]')
-        submit = self.driver.find_element('xpath', '//*[@id="loginbutton"]')
+        submit = self.driver.find_element('xpath', '//button[@type="submit"]')
 
-        # Pedir credenciales
-        self.console.print("Ingresa las credenciales de la cuenta.", style="bold yellow")
-        user.send_keys(input("Correo electronico o numero de telefono: "))
-        password.send_keys(getpass.getpass("Contraseña: "))
+        # Ask user's credentials
+        self.console.print(self.t(self.lang, "session.credentials"), style="bold yellow")
+        user.send_keys(input(self.t(self.lang, "session.email")))
+        password.send_keys(getpass.getpass(self.t(self.lang, "session.password")))
         submit.click()
 
-        # Esperar a que la URL cambie
+        # Wait till the URL changes
         WebDriverWait(self.driver, 10).until(
-            EC.url_changes("https://www.facebook.com/login")
+            EC.url_changes("https://www.facebook.com/?locale=en&login")
         )
 
-        # Verificar la nueva URL
-        if "https://www.facebook.com/?sk=welcome" in self.driver.current_url:
-            self.console.print("Inicio de sesión exitoso.", style="bold green")
-            cookies = self.driver.get_cookies()
+        # Navigate to dashboard
+        self.driver.get("https://www.facebook.com/?locale=en&sk=welcome")
 
-            # Guardar cookies de sesion
-            with open("./session/cookies/cookies.pkl", "wb") as file:
-                pickle.dump(cookies, file)
-            
-            # Cargar cookies
-            self.load()
-        else:
-            self.console.print("Error al iniciar sesión.", style="bold red")
+        # Check if a dashboard element is found
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, '//div[@aria-label="Create"]'))
+            )
+        except:
+            self.console.print(self.t(self.lang, "session.wrong_credentials"), style="bold red")
             self.driver.quit()
+            sys.exit(1)
 
+        # Get browse's cookies
+        cookies = self.driver.get_cookies()
+
+        # Store cookies
+        with open("./session/cookies/cookies.pkl", "wb") as file:
+            pickle.dump(cookies, file)
+
+        self.console.print(self.t(self.lang, "session.success"), style="bold green")
+        
 
     def load(self):
+        # Load cookies
         with open("./session/cookies/cookies.pkl", "rb") as file:
             cookies = pickle.load(file)
+
+        # Navigate to login screen
+        self.driver.get("https://www.facebook.com/?locale=en&login")
+
+        # Set cookies
+        for cookie in cookies:
+            self.driver.add_cookie(cookie)
         
-        # Verificar si caducaron las cookies
-        if any('expiry' in cookie and cookie['expiry'] < int(datetime.now().timestamp()) for cookie in cookies):
-            self.console.print("Caducaron lsa cookies de session", style="bold red")
+        # Navigate to dashboard
+        self.driver.get("https://www.facebook.com/?locale=en&sk=welcome")
+        
+        # Check if login was successful->looking for a dashboard's element
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, '//div[@aria-label="Create"]'))
+            )
+        except TimeoutException:
             os.remove("./session/cookies/cookies.pkl")
-            self.login()
-        else:
-            # Abrir una página web y establecer las cookies
-            self.driver.get("https://www.facebook.com/login")
-            for cookie in cookies:
-                self.driver.add_cookie(cookie)
-            self.driver.get("https://www.facebook.com/?sk=welcome")
+            raise Exception()

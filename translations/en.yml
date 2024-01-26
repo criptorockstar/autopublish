@@ -1,0 +1,11 @@
+en:
+  session:
+    credentials: "Set your credentials. \n"
+    success: "Successful loging."
+    email: "Email or phone number: "
+    password: "Password: "
+    wrong_credentials: "Credentials are wrong."
+  post:
+    empty_records: "The posts file is empty."
+    invalid_timeformat: "Time format isnt valid."
+    invalid_timevalues: "The accepted values are: (s)econds, (m)inutes, (h)ours."
