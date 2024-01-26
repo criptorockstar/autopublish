@@ -32,6 +32,9 @@ class Bot:
         
         # Set the driver's default language to english
         self.options.add_argument("--lang=en")
+
+        # Run in headless mode
+        self.options.add_argument('--headless')
         
         # Start driver
         self.driver = webdriver.Chrome(options=self.options)
