@@ -1,18 +1,21 @@
 es:
   main:
-    set_language: "El idioma elegido fue: Español es_ES\n"
-    set_timezone: "Selecciona tu zona horaria"
-    set_continent: "Selecciona un continente"
-    europe: "Europa"
-    pacific: "Pacifico"
-    headless: "Quieres ocultar el navegador automatizado?"
+    set_language: "El idioma elegido fue: Español\n"
+    headless: "Quieres correrlo en modo headless?"
     choose: "Si"
+    language: "Idioma:"
+    headless: "Modo headless:"
+    loading_preferences: "Cargando preferencias.."
+    loading_cookies: "Cargando cookies de session.."
   session:
-    credentials: "Introduce tus credenciales. \n"
+    credentials: "\nIntroduce tus credenciales."
     success: "Ingreso exitoso."
     email: "Correo electronico o numero de telefono: "
     password: "Contraseña: "
     wrong_credentials: "Las credenciales son incorrectas."
+    storing_cookies: "\nGuardando cookies de session.."
+    loading_cookies: "Cargando cookies de sesion.."
+    cookies_loaded: "Session cargada con exito."
   post:
     empty_records: "El archivo de post esta vacio."
     invalid_timeformat: "El tiempo no tiene un formato valido."

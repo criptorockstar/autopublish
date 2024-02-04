@@ -7,7 +7,6 @@ load_dotenv()
 class Config:
     def __init__(self):
         self.locale = os.getenv("LANGUAGE")
-        self.timezone = os.getenv("TIMEZONE")
         self.headless = os.getenv("HEADLESS")
    
         self.options = [
@@ -32,10 +31,6 @@ class Config:
         return self.locale
 
 
-    def get_timezone(self):
-        return self.timezone
-
-
     def get_headless(self):
         return self.headless
 
@@ -43,7 +38,7 @@ class Config:
     def set_locale(self, locale):
         # Read the .env file
         env_path = ".env"
-        value = "en" if locale == '1' else "es"
+        value = "en" if locale == 'en' else "es"
 
         with open(env_path, "r") as env_file:
             lines = env_file.readlines()
@@ -62,32 +57,10 @@ class Config:
         self.locale = value 
 
 
-    def set_timezone(self, timezone):
-        # Read the .env file
-        env_path = ".env"
-        value = timezone
-
-        with open(env_path, "r") as env_file:
-            lines = env_file.readlines()
-
-        # Modify the value of TIMEZONE
-        for i, line in enumerate(lines):
-            if line.startswith("TIMEZONE="):
-                lines[i] = f"TIMEZONE={value}\n"
-                break
-
-        # Write the modified lines to .env
-        with open(env_path, "w") as env_file:
-            env_file.writelines(lines)
-
-        # Update the attribute on the instance
-        self.timezone = value
-
-
     def set_headless(self, headless):
         # Read the .env file
         env_path = ".env"
-        value = "1" if headless else "0"  # Assuming headless is a boolean
+        value = headless
 
         with open(env_path, "r") as env_file:
             lines = env_file.readlines()

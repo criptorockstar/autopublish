@@ -1,18 +1,21 @@
 en:
   main:
-    set_language: "The language has been set to: English en_US\n"
-    set_timezone: "Select your timezone"
-    set_continent: "Select a continent"
-    europe: "Europe"
-    pacific: "Pacific"
-    headless: "Do you want to hide the automated browser?"
+    set_language: "The language has been set to: English\n" 
+    headless: "Do you want to run it on headless mode?"
     choose: "Yes"
+    language: "Language:"
+    headless: "Headless mode:"
+    loading_preferences: "Loading preferences.."
+    loading_cookies: "Loading session's cookies.."
   session:
-    credentials: "Set your credentials. \n"
+    credentials: "\nSet your credentials."
     success: "Successful loging."
     email: "Email or phone number: "
     password: "Password: "
     wrong_credentials: "Credentials are wrong."
+    storing_cookies: "\nStoring session's cookies.."
+    loading_cookies: "Loading session's cookies.."
+    cookies_loaded: "Session successful loaded."
   post:
     empty_records: "The posts file is empty."
     invalid_timeformat: "Time format isnt valid."
