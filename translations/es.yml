@@ -1,4 +1,12 @@
 es:
+  main:
+    set_language: "El idioma elegido fue: Español es_ES\n"
+    set_timezone: "Selecciona tu zona horaria"
+    set_continent: "Selecciona un continente"
+    europe: "Europa"
+    pacific: "Pacifico"
+    headless: "Quieres ocultar el navegador automatizado?"
+    choose: "Si"
   session:
     credentials: "Introduce tus credenciales. \n"
     success: "Ingreso exitoso."

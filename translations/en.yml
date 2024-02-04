@@ -1,4 +1,12 @@
 en:
+  main:
+    set_language: "The language has been set to: English en_US\n"
+    set_timezone: "Select your timezone"
+    set_continent: "Select a continent"
+    europe: "Europe"
+    pacific: "Pacific"
+    headless: "Do you want to hide the automated browser?"
+    choose: "Yes"
   session:
     credentials: "Set your credentials. \n"
     success: "Successful loging."
