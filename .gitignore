@@ -1,4 +1,5 @@
 session/cookies.pkl
 __pycache__
 posts.csv
-.env.example
+.env
+.posts.csv

@@ -63,9 +63,7 @@ class Session:
             pickle.dump(cookies, file)
 
 
-    def load(self):
-        self.console.print(self.i18n.translate(self.config.get_locale(), "session.loading_cookies"), style="bold yellow")
-        
+    def load(self): 
         # Load cookies
         with open("./session/cookies.pkl", "rb") as file:
             cookies = pickle.load(file)
@@ -88,5 +86,3 @@ class Session:
         except TimeoutException:
             os.remove("./session/cookies.pkl")
             raise Exception()
-
-        self.console.print(self.i18n.translate(self.config.get_locale(), "session.cookies_loaded"), style="bold green")        

@@ -2,7 +2,6 @@ import os.path
 import sys
 import inquirer
 from rich import print
-from pytz import all_timezones
 from config import Config
 from translations import I18n
 from rich.console import Console
@@ -13,7 +12,8 @@ from selenium.webdriver.chrome.options import Options
 
 
 class Bot:
-    def __init__(self) -> None:
+    def __init__(self, detach) -> None:
+        self.detach = True if detach else False
         self.console = Console()
         self.config = Config()
         self.i18n = I18n()
@@ -28,14 +28,20 @@ class Bot:
                 chrome_options.add_argument(f"{option}={value}")
             else:
                 chrome_options.add_argument(option)
-
-        if self.config.get_headless() == 1:
+        
+        # Apply headless mode
+        if self.config.get_headless():
             chrome_options.add_argument('--headless')
 
         # For testing purposes
-        chrome_options.add_experimental_option("detach", True)
-        # For testing purposes
+        if self.detach:
+            chrome_options.add_experimental_option("detach", True)
+        
+        # Build driver
         driver = webdriver.Chrome(options=chrome_options)
+
+        # Set driver's sizes
+        driver.set_window_size(self.config.get_sizes()[0], self.config.get_sizes()[1])
 
         return driver
 
@@ -97,15 +103,17 @@ class Bot:
         # Print user settings
         self.console.print("Settings", style="bold green")
         print(self.i18n.translate(self.config.get_locale(), "main.language"), locale)
-        print("Headless:", headless == 1)
+        print("Headless:", headless)
         
         # Offer reconfigure options
         reconfigure = input("\nReconfigure? (y/n): ")
 
+        # Enter is 'n' by default
+        reconfigure = reconfigure.lower() if reconfigure.strip() else 'n'
+
+        # Ask the user
         if reconfigure.lower() == 'y':
             self.configure()
-        elif reconfigure.lower() != 'n':
-            self.console.print("invalid response", style="bold red")
 
         # Load user's preferences'
         self.console.print(self.i18n.translate(self.config.get_locale(), "main.loading_preferences"), style="bold green")
@@ -113,10 +121,14 @@ class Bot:
 
         # Load external classes
         self.session = Session(driver, self.config)
+        self.post = Post(driver, self.config) 
 
         # Check if cookie exists 
         self.console.print(self.i18n.translate(self.config.get_locale(), "main.loading_cookies"), style="bold green")
-        if not os.path.isfile("./session/cookies/cookie.pkl"):
+        
+        current_folder = os.path.dirname(__file__)
+        file_name = os.path.join(current_folder, "cookies.pkl")
+        if not os.path.isfile(file_name):
             self.session.login()
 
         # Try to load session's cookie
@@ -124,8 +136,11 @@ class Bot:
             self.session.load()
         except:
             self.session.login()
- 
-  
+        
+        # Start postsing
+        self.post.start()
+
+
 if __name__=="__main__":
-    bot = Bot() 
+    bot = Bot(detach=True) 
     bot.start()

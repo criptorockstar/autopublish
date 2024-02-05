@@ -23,6 +23,10 @@ class Config:
         self.sizes = (640, 480)
 
 
+    def get_sizes(self):
+        return self.sizes
+
+
     def get_options(self):
         return self.options, self.sizes
 

@@ -1,6 +1,5 @@
 es:
   main:
-    set_language: "El idioma elegido fue: Español\n"
     headless: "Quieres correrlo en modo headless?"
     choose: "Si"
     language: "Idioma:"
@@ -14,9 +13,7 @@ es:
     password: "Contraseña: "
     wrong_credentials: "Las credenciales son incorrectas."
     storing_cookies: "\nGuardando cookies de session.."
-    loading_cookies: "Cargando cookies de sesion.."
-    cookies_loaded: "Session cargada con exito."
   post:
-    empty_records: "El archivo de post esta vacio."
-    invalid_timeformat: "El tiempo no tiene un formato valido."
-    invalid_timevalues: "Los valores aceptados son: (s)egundo, (m)inutos, (h)oras."
+    empty_records: "El archivo: post.csv esta vacio."
+    inner_clock: "\nInicializando reloj interno.."
+    loading_posts: "Cargando publicaciones programadas.."
